@@ -1,0 +1,28 @@
+{
+  "name": "ls",
+  "version": "1.0.0",
+  "description": "TP1 info 834",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinIDU/TP_Redis.git"
+  },
+  "author": "Kevin et Théo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KevinIDU/TP_Redis/issues"
+  },
+  "homepage": "https://github.com/KevinIDU/TP_Redis#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.13",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  }
+}
