@@ -8,6 +8,9 @@ const User = require('../Utilisateur/user.js');
 const JWT_SECRET = require('../secrets/secret');
 const Jwt = require('jsonwebtoken');
 const passport = require('passport')
+const redis = require("redis");
+const client = redis.createClient();
+
 //CREATE
 router.post("/user", (req, res) => {
      
@@ -38,6 +41,35 @@ router.delete("/user/:id", (req, res) => {
     controller.delete(req, res);
 });
 
+router.get('/incrToken', (req, res) =>{
+    const token = req.header('Authorization').replace('Bearer ', '')
+    
+    try{
+        const payload = jwt.verify(token, JWT_SECRET) 
+        
+        client.get(token, (err, result) => {
+
+            if (result !== null && result >= 10) {
+                res.send('You are rate limited, wait a bit')
+            } else {
+                client.incr(token, (err, value) => {
+                    if (err) {
+                        console.error(err)
+                        res.send(StatusCodes.INTERNAL_SERVER_ERROR).json(err)
+                    }
+    
+                    // It is not the best algorithm but every 10 minutes, you'll be given 10 more shots
+                    if (value === 1) client.expire(token, 10)
+                    res.send('L\'incrémentation a bien été effectuée')
+                })
+            }
+        })
+
+    } catch(error) {
+        console.error(error.message)
+        res.send('Vous n\'avez pas accès !')
+    }
+})
 
 router.get('/createUser', async (req, res) => {
     // create a user a new user
